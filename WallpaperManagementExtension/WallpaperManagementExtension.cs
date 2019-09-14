@@ -5,12 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
-using System.Linq;
 using System.Runtime.InteropServices;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Forms;
-
 
 
 namespace WallpaperManagementExtension
@@ -196,25 +191,11 @@ namespace WallpaperManagementExtension
             {
                 string outputFileName = Path.GetFileNameWithoutExtension(file.Name) + ".jpg";
                 string outputPath = Path.Combine(wallpaperFolder.FullName, outputFileName);
-                var confirmResult = MessageBox.Show($"Copy to {outputPath}",
-                                     "Confirm copy",
-                                     MessageBoxButtons.YesNo);
-
-                if (confirmResult == DialogResult.Yes)
-                {
-                    this.ConvertImage(file, new FileInfo(outputPath));
-                }
+                this.ConvertImage(file, new FileInfo(outputPath));
             }
             else
             {
-                var confirmResult = MessageBox.Show($"Copy to {Path.Combine(wallpaperFolder.FullName, file.Name)}",
-                                     "Confirm copy",
-                                     MessageBoxButtons.YesNo);
-
-                if (confirmResult == DialogResult.Yes)
-                {
-                    File.Copy(file.FullName, Path.Combine(wallpaperFolder.FullName, file.Name));
-                }
+                File.Copy(file.FullName, Path.Combine(wallpaperFolder.FullName, file.Name));
             }
         }
 
@@ -249,14 +230,7 @@ namespace WallpaperManagementExtension
         private void RemoveSingleWWallpaper(FileInfo file, DirectoryInfo wallpaperFolder)
         {
             string filePathToDelete = Path.Combine(wallpaperFolder.FullName, Path.GetFileNameWithoutExtension(file.Name) + ".jpg");
-            var confirmResult = MessageBox.Show($"Are you sure you want to remove {filePathToDelete}?",
-                                     "Confirm deletion",
-                                     MessageBoxButtons.YesNo);
-
-            if (confirmResult == DialogResult.Yes)
-            {
-                File.Delete(filePathToDelete);
-            }
+            File.Delete(filePathToDelete);
         }
 
         private void RefreshOverlays()
