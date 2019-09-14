@@ -1,4 +1,5 @@
-﻿using SharpShell.Attributes;
+﻿using ImageMagick;
+using SharpShell.Attributes;
 using SharpShell.SharpContextMenu;
 using System;
 using System.Collections.Generic;
@@ -194,17 +195,14 @@ namespace WallpaperManagementExtension
             if (file.Extension != ".jpg")
             {
                 string outputFileName = Path.GetFileNameWithoutExtension(file.Name) + ".jpg";
-                Process converter = new Process();
-                converter.StartInfo.FileName = @"C:\Program Files (x86)\ImageMagick-6.9.3-Q16\convert.exe";
-                converter.StartInfo.Arguments = $"\"{file.FullName}\" -resize 1920x1080 \"{Path.Combine(wallpaperFolder.FullName, outputFileName)}\"";
-                
-                var confirmResult = MessageBox.Show($"Run convert.exe {converter.StartInfo.Arguments}",
+                string outputPath = Path.Combine(wallpaperFolder.FullName, outputFileName);
+                var confirmResult = MessageBox.Show($"Copy to {outputPath}",
                                      "Confirm copy",
                                      MessageBoxButtons.YesNo);
 
                 if (confirmResult == DialogResult.Yes)
                 {
-                    converter.Start();
+                    this.ConvertImage(file, new FileInfo(outputPath));
                 }
             }
             else
@@ -217,6 +215,19 @@ namespace WallpaperManagementExtension
                 {
                     File.Copy(file.FullName, Path.Combine(wallpaperFolder.FullName, file.Name));
                 }
+            }
+        }
+
+        private void ConvertImage(FileInfo source, FileInfo target)
+        {
+            MagickReadSettings settings = new MagickReadSettings
+            {
+                Width = 1920,
+                Height = 1080
+            };
+            using (MagickImage image = new MagickImage(source.FullName, settings))
+            {
+                image.Write(target.FullName);
             }
         }
 
