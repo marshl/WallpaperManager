@@ -3,7 +3,9 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
 VisualStudioVersion = 15.0.28010.2046
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WallpaperManager", "WallpaperManager\WallpaperManager.csproj", "{95F269AD-1614-41F6-918A-5800D1797D24}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "InWallpaperFolderIconOverlayHandler", "InWallpaperFolderIconOverlayHandler\InWallpaperFolderIconOverlayHandler.csproj", "{95F269AD-1614-41F6-918A-5800D1797D24}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WallpaperManagementExtension", "WallpaperManagementExtension\WallpaperManagementExtension.csproj", "{F1D61CDA-28B5-4730-8AC9-F8D3743CA0DB}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -15,6 +17,10 @@ Global
 		{95F269AD-1614-41F6-918A-5800D1797D24}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{95F269AD-1614-41F6-918A-5800D1797D24}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{95F269AD-1614-41F6-918A-5800D1797D24}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F1D61CDA-28B5-4730-8AC9-F8D3743CA0DB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F1D61CDA-28B5-4730-8AC9-F8D3743CA0DB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F1D61CDA-28B5-4730-8AC9-F8D3743CA0DB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F1D61CDA-28B5-4730-8AC9-F8D3743CA0DB}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
