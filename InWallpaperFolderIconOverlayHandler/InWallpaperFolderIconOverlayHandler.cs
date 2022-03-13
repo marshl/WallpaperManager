@@ -64,6 +64,7 @@ namespace InWallpaperFolderIconOverlayHandler
                         break;
                     }
 
+                    // Don't bother showing the icon for pictures in the CustomWallpapers directory
                     if (parentDir.Name == "CustomWallpapers")
                     {
                         return false;
@@ -71,7 +72,6 @@ namespace InWallpaperFolderIconOverlayHandler
                     parentDir = parentDir.Parent;
                 }
 
-                //  Return true if the file is read only, meaning we'll show the overlay.
                 if (!inPicturesDir)
                 {
                     return false;
@@ -106,7 +106,7 @@ namespace InWallpaperFolderIconOverlayHandler
         protected override System.Drawing.Icon GetOverlayIcon()
         {
             //  Return the read only icon.
-            return Properties.Resources._112_Tick_Green;
+            return Properties.Resources.accepted_wallpaper;
         }
     }
 }

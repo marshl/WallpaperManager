@@ -5,11 +5,15 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
+using System.Linq;
 using System.Runtime.InteropServices;
+using System.Windows.Forms;
+
 
 
 namespace WallpaperManagementExtension
 {
+
     /// <summary>
     /// The CountLinesExtensions is an example shell context menu extension,
     /// implemented with SharpShell. It adds the command 'Count Lines' to text
@@ -19,10 +23,15 @@ namespace WallpaperManagementExtension
     [COMServerAssociation(AssociationType.AllFiles)]
     public class WallpaperManagementExtension : SharpContextMenu
     {
-        private DirectoryInfo GetWallpaperFolder()
+        private DirectoryInfo GetPictureFolder()
         {
             var userDir = Environment.GetFolderPath(Environment.SpecialFolder.UserProfile);
-            return new DirectoryInfo(Path.Combine(userDir, "Pictures", "CustomWallpapers"));
+            return new DirectoryInfo(Path.Combine(userDir, "Pictures"));
+        }
+
+        private DirectoryInfo GetWallpaperFolder()
+        {
+            return new DirectoryInfo(Path.Combine(this.GetPictureFolder().FullName, "CustomWallpapers"));
         }
 
         private bool IsInPictures(FileInfo file)
@@ -80,6 +89,12 @@ namespace WallpaperManagementExtension
             return false;
         }
 
+
+        private bool CanFileGotoSource(FileInfo fileInfo)
+        {
+            return this.IsInCustomWallpapers(fileInfo);
+        }
+
         private readonly List<string> AcceptedWallpaperFilenames = new List<string>();
 
         private void GetAcceptedWallpaperFiles()
@@ -106,7 +121,7 @@ namespace WallpaperManagementExtension
             foreach (string path in this.SelectedItemPaths)
             {
                 FileInfo file = new FileInfo(path);
-                if (this.CanFileBeAdded(file) || this.CanFileBeRemoved(file))
+                if (this.CanFileBeAdded(file) || this.CanFileBeRemoved(file) || this.CanFileGotoSource(file))
                 {
                     return true;
                 }
@@ -114,6 +129,7 @@ namespace WallpaperManagementExtension
 
             return false;
         }
+
 
         /// <summary>
         /// Creates the context menu. This can be a single menu item or a tree of them.
@@ -126,12 +142,14 @@ namespace WallpaperManagementExtension
             this.GetAcceptedWallpaperFiles();
             bool canAddFile = false;
             bool canRemoveFile = false;
+            bool canGotoSourceFile = false;
 
             foreach (string path in this.SelectedItemPaths)
             {
                 FileInfo file = new FileInfo(path);
                 canAddFile |= this.CanFileBeAdded(file);
                 canRemoveFile |= this.CanFileBeRemoved(file);
+                canGotoSourceFile |= this.CanFileGotoSource(file);
             }
 
             //  Create the menu strip
@@ -143,12 +161,10 @@ namespace WallpaperManagementExtension
                 var itemAddWalpaper = new ToolStripMenuItem
                 {
                     Text = "Add to wallpapers",
-                    //Image = Properties.Resources.CountLines
+                    Image = Properties.Resources.picture_add,
                 };
 
-                //  When we click, we'll count the lines
                 itemAddWalpaper.Click += (sender, args) => AddAsWallpaper();
-                //  Add the item to the context menu.
                 menu.Items.Add(itemAddWalpaper);
             }
 
@@ -156,11 +172,24 @@ namespace WallpaperManagementExtension
             {
                 var itemRemoveWallpaper = new ToolStripMenuItem
                 {
-                    Text = "Remove from wallpapers"
+                    Text = "Remove from wallpapers",
+                    Image = Properties.Resources.picture_remove
                 };
 
                 itemRemoveWallpaper.Click += (sender, args) => RemoveWallpapers();
                 menu.Items.Add(itemRemoveWallpaper);
+            }
+
+            if (canGotoSourceFile)
+            {
+                var gotoSourceMenuItem = new ToolStripMenuItem
+                {
+                    Text = "Go to source wallpaper",
+                    Image = Properties.Resources.picture_goto,
+                };
+
+                gotoSourceMenuItem.Click += (sender, args) => GotoAllWallpapers();
+                menu.Items.Add(gotoSourceMenuItem);
             }
 
             //  Return the menu
@@ -231,6 +260,24 @@ namespace WallpaperManagementExtension
         {
             string filePathToDelete = Path.Combine(wallpaperFolder.FullName, Path.GetFileNameWithoutExtension(file.Name) + ".jpg");
             File.Delete(filePathToDelete);
+        }
+
+        private void GotoAllWallpapers()
+        {
+            DirectoryInfo picturesFolder = this.GetPictureFolder();
+            var allFilepaths = picturesFolder.GetFiles("*", SearchOption.AllDirectories);
+            foreach (var selectedPath in this.SelectedItemPaths)
+            {
+                string selectedFilename = Path.GetFileNameWithoutExtension(selectedPath);
+                var matchingFiles = allFilepaths.Where(x => Path.GetFileNameWithoutExtension(x.FullName) == selectedFilename && x.FullName != selectedPath);
+                foreach (var matchingFile in matchingFiles)
+                {
+                    Process explorer = new Process();
+                    explorer.StartInfo.FileName = "explorer";
+                    explorer.StartInfo.Arguments = $"/select,{matchingFile.FullName}";
+                    explorer.Start();
+                }
+            }
         }
 
         private void RefreshOverlays()

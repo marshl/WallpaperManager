@@ -69,5 +69,25 @@ namespace InWallpaperFolderIconOverlayHandler.Properties {
                 return ((System.Drawing.Icon)(obj));
             }
         }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Icon similar to (Icon).
+        /// </summary>
+        internal static System.Drawing.Icon accepted_wallpaper {
+            get {
+                object obj = ResourceManager.GetObject("accepted_wallpaper", resourceCulture);
+                return ((System.Drawing.Icon)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Icon similar to (Icon).
+        /// </summary>
+        internal static System.Drawing.Icon generic_picture {
+            get {
+                object obj = ResourceManager.GetObject("generic_picture", resourceCulture);
+                return ((System.Drawing.Icon)(obj));
+            }
+        }
     }
 }

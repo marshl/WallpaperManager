@@ -78,5 +78,9 @@
   <ItemGroup>
     <None Include="Resources\112_Tick_Green.ico" />
   </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\accepted_wallpaper.ico" />
+    <Content Include="Resources\generic_picture.ico" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
