@@ -157,7 +157,6 @@ namespace WallpaperManagementExtension
 
             if (canAddFile)
             {
-                //  Create a 'count lines' item
                 var itemAddWalpaper = new ToolStripMenuItem
                 {
                     Text = "Add to wallpapers",
@@ -197,7 +196,7 @@ namespace WallpaperManagementExtension
         }
 
         /// <summary>
-        /// Counts the lines in the selected files
+        /// Add the selected file to your wallpaper folder
         /// </summary>
         private void AddAsWallpaper()
         {
